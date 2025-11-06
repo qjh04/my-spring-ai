@@ -3,6 +3,7 @@ package cn.itcast.controller;
 import cn.itcast.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class ChatController {
         return this.chatService.chat(question);
     }
 
-    @PostMapping("/stream")
+    @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> chatStream(@RequestBody String question) {
         log.info("question: {}", question);
         return this.chatService.chatStream(question);
