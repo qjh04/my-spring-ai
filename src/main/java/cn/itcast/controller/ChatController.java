@@ -1,5 +1,6 @@
 package cn.itcast.controller;
 
+import cn.itcast.domain.dto.ChatDTO;
 import cn.itcast.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,8 @@ public class ChatController {
     }
 
     @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> chatStream(@RequestBody String question) {
-        log.info("question: {}", question);
-        return this.chatService.chatStream(question);
+    public Flux<String> chatStream(@RequestBody ChatDTO chatDTO) {
+        return this.chatService.chatStream(chatDTO);
     }
 
 }

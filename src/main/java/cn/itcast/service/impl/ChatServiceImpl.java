@@ -1,9 +1,11 @@
 package cn.itcast.service.impl;
 
+import cn.itcast.domain.dto.ChatDTO;
 import cn.itcast.service.ChatService;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -27,10 +29,11 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public Flux<String> chatStream(String question) {
+    public Flux<String> chatStream(ChatDTO chatDTO) {
         return this.chatClient
                 .prompt()
-                .user(question)
+                .user(chatDTO.getQuestion())
+                .advisors(a -> a.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatDTO.getSessionId()))
                 .stream()
                 .content();
     }

@@ -1,5 +1,6 @@
 package cn.itcast.service;
 
+import cn.itcast.domain.dto.ChatDTO;
 import reactor.core.publisher.Flux;
 
 public interface ChatService {
@@ -12,5 +13,5 @@ public interface ChatService {
     /**
      * 流式输出聊天接口
      */
-    Flux<String> chatStream(String question);
+    Flux<String> chatStream(ChatDTO chatDTO);
 }
