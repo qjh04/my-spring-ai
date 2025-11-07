@@ -26,4 +26,4 @@ logging:
         ai:
           chat:
             client:
-              advisor: WARN
+              advisor: DEBUG

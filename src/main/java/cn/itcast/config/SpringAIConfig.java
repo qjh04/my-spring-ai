@@ -1,6 +1,7 @@
 package cn.itcast.config;
 
 import cn.itcast.constant.Constant;
+import cn.itcast.tools.WeatherTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
@@ -22,7 +23,8 @@ public class SpringAIConfig {
     public ChatClient chatClient(ChatClient.Builder builder,
                                  Advisor simpleLoggerAdvisor,
                                  Advisor messageChatMemoryAdvisor,
-                                 Advisor safeGuardAdvisor) {
+                                 Advisor safeGuardAdvisor,
+                                 WeatherTools weatherTools) {
         return builder
                 .defaultSystem(Constant.SYS_ROLE)   // 系统 prompt
                 .defaultAdvisors(
@@ -30,6 +32,7 @@ public class SpringAIConfig {
                         messageChatMemoryAdvisor,   // 聊天记录
                         safeGuardAdvisor            // 安全过滤
                 )
+                .defaultTools(weatherTools)         // 工具
                 .build();
     }
 
