@@ -1,0 +1,9 @@
+# 文件所在文件夹路径配置
+file:
+  path: "classpath:"
+
+logging:
+  level:
+    root: INFO
+    cn.itcast: DEBUG
+

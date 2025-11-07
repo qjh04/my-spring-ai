@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: my-spring-ai
+  profiles:
+    active: dev
   ai:
     dashscope:
       api-key: sk-9c2a25a0ed034e84a3de3bbaad42a3aa

@@ -1,0 +1,9 @@
+# 文件所在文件路径配置
+file:
+  path: "file:./file/"
+
+logging:
+  level:
+    root: INFO
+    cn.itcast: INFO
+
