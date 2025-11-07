@@ -6,6 +6,9 @@ import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -16,6 +19,8 @@ import reactor.core.publisher.Flux;
 public class ChatServiceImpl implements ChatService{
 
     private final ChatClient chatClient;
+
+    private final VectorStore vectorStore;
 
     @Override
     public String chat(String question) {
@@ -30,10 +35,18 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public Flux<String> chatStream(ChatDTO chatDTO) {
+
+        SearchRequest searchRequest = SearchRequest.builder()
+                .query(chatDTO.getQuestion())
+                .topK(2)
+                .build();
+
         return this.chatClient
                 .prompt()
                 .user(chatDTO.getQuestion())
-                .advisors(a -> a.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatDTO.getSessionId()))
+                .advisors(a -> a
+                        .advisors(new QuestionAnswerAdvisor(vectorStore, searchRequest))
+                        .param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, chatDTO.getSessionId()))
                 .stream()
                 .content();
     }

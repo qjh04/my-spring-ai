@@ -1,5 +1,6 @@
 package cn.itcast.tools;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component;
 public class WeatherTools {
     @Tool(description = "根据城市id查询天气信息")
     public WeatherDTO getWeather(@ToolParam(description = "城市id") String cityId) {
+        if (StrUtil.isBlank(cityId)) {
+            return new WeatherDTO();
+        }
         // 通过http请求获取天气信息，并且通过json数据解析为WeatherDTO对象
         String url = "http://t.weather.itboy.net/api/weather/city/" + cityId;
         String data = HttpUtil.get(url);
